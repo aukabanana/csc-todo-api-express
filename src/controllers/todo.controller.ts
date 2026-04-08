@@ -25,6 +25,23 @@ export const TodoController = {
     }
   },
 
+  filter: (req: Request, res: Response) => {
+    try {
+      const { completed } = req.query;
+
+      if (completed === undefined) {
+        return res.status(400).json({ message: "Query not found" });
+      }
+
+      const isCompleted = completed === "true";
+      const todos = TodoService.filterTodos(isCompleted);
+      res.json(todos);
+
+    } catch (err: any) {
+      res.status(400).json({ message: err.message });
+    }
+  },
+
   // Update - Update an existing todo
   update: (req: Request, res: Response) => {
     try {
